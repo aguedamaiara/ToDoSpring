@@ -6,5 +6,10 @@
 </head>
 <body>
 <h1>Olá</h1>
+<p th:text="${nome}"> TEST</p>
+<ul>
+    <li th:each="aluno: ${alunos}" th:text="${aluno}"></li>
+</ul>
+<p th:if="${ehDev}"> A variavel ehDev está como true</p>
 </body>
 </html>
