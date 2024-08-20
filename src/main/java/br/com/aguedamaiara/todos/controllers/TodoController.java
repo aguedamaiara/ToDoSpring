@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -58,9 +56,42 @@ public class TodoController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(Todo todo) {
+    public String edit(@Valid Todo todo, BindingResult result) {
+        if (result.hasErrors()) {
+            return "todo/form";
+        }
         todoRepository.save(todo);
         return "redirect:/";
     }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable Long id) {
+        var todo = todoRepository.findById(id);
+        if (todo.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return new ModelAndView("todo/delete", Map.of("todo", todo.get()));
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete (Todo todo){
+        todoRepository.delete(todo);
+        return"redirect:/";
+    }
+
+    @PostMapping("/finish/{id}")
+    public String finish(@PathVariable Long id) {
+        var optionalTodo = todoRepository.findById(id);
+        if (optionalTodo.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        var todo = optionalTodo.get();
+        todo.markHasFinished();
+        todoRepository.save(todo);
+        return "redirect:/";
+    }
+
+
+
 
 }

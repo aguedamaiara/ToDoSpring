@@ -4,6 +4,10 @@ package br.com.aguedamaiara.todos.models;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import jakarta.persistence.Column;
@@ -19,11 +23,16 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(min = 3, max = 100)
     @Column(length = 100, nullable = false)
     private String title;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @NotNull
+    @FutureOrPresent
 
     @Column(nullable = false)
     @DateTimeFormat(iso = ISO.DATE)
@@ -34,6 +43,10 @@ public class Todo {
 
     public Todo() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void markHasFinished() {
+        this.fineshedAt = LocalDate.now();
     }
 
     public Long getId() {
