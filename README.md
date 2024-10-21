@@ -1,6 +1,6 @@
 # To-Do List Application
 
-Este é um To-Do List construído com **Spring Boot**, **Thymeleaf** e banco de dados **H2** em memória. 
+To-Do List construído com **Spring Boot**, **Thymeleaf** e banco de dados **H2** em memória. 
 ## Funcionalidades
 
 - **CRUD de Tarefas:** Criação, leitura, atualização e exclusão de tarefas.
